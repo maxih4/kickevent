@@ -1,10 +1,11 @@
 package com.example.kickevent.repositories;
 
-import com.example.kickevent.data.Person;
+import com.example.kickevent.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
 import java.util.List;
+import java.util.Optional;
 /*
 public interface PersonRepository extends CrudRepository<Person, Long> {
     List<Person> findByLastName(String lastName);
@@ -12,10 +13,9 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 }
 */
 
-public interface PersonRepository extends JpaRepository<Person, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<Person> findByLastName(String lastName);
-    List<Person> findAll();
+    Optional<User> findByUserName(String userName);
+    List<User> findAll();
 
-    Person findOneByFirstNameAndLastName(String firstName, String lastName);
 }
