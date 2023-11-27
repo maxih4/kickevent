@@ -11,10 +11,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -39,12 +41,13 @@ public class JwtAuthenticationController {
 
         final UserDetails userDetails = userService
                 .loadUserByUsername(authenticationRequest.getUserName());
+        final Long id = userService.findByUsername(userDetails.getUsername()).get().getId();
 
         final String token = jwtTokenUtil.generateToken(userDetails);
         final Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
-        final RefreshToken refreshToken = refreshTokenService.createRefreshToken(userService.findByUsername(userDetails.getUsername()).get().getId());
+        final RefreshToken refreshToken = refreshTokenService.createRefreshToken(id);
 
-        return ResponseEntity.ok(new TokenResponse(token, expirationDate, refreshToken.getToken(), refreshToken.getExpiryDate()));
+        return ResponseEntity.ok(new TokenResponse(token, expirationDate, refreshToken.getToken(), refreshToken.getExpiryDate(), id));
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -66,14 +69,13 @@ public class JwtAuthenticationController {
     public ResponseEntity<?> refreshtoken(@RequestBody RefreshTokenRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
-
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
                     String token = jwtTokenUtil.generateTokenFromUsername(user.getUserName());
 
-                    return ResponseEntity.ok(new TokenResponse(token,jwtTokenUtil.getExpirationDateFromToken(token),requestRefreshToken,refreshTokenService.findByToken(requestRefreshToken).get().getExpiryDate()));
+                    return ResponseEntity.ok(new TokenResponse(token,jwtTokenUtil.getExpirationDateFromToken(token),requestRefreshToken,refreshTokenService.findByToken(requestRefreshToken).get().getExpiryDate(),refreshTokenService.findByToken(requestRefreshToken).get().getUser().getId()));
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
