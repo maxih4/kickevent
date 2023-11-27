@@ -46,8 +46,11 @@ public class Event {
 
     private Date createdDate;
 
+    @Column(length=100000)
+    private String content;
 
-    public Event(long id, String title, Date startDate, Date endDate, String streetName, String houseNumber, String city, Date createdDate) {
+
+    public Event(long id, String title, Date startDate, Date endDate, String streetName, String houseNumber, String city, Date createdDate, String content) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
@@ -56,5 +59,6 @@ public class Event {
         this.houseNumber = houseNumber;
         this.city = city;
         this.createdDate = createdDate;
+        this.content = content;
     }
 }

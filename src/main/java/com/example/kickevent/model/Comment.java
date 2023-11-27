@@ -31,7 +31,6 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-
     private User owner;
 
     private Date created;

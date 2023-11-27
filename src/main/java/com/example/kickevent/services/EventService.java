@@ -39,6 +39,7 @@ public class EventService {
                 .streetName(event.getStreetName())
                 .houseNumber(event.getHouseNumber())
                 .city(event.getCity())
+                .content(event.getContent())
                 .owner(userRepository.findByUserName(auth.getName()).orElseThrow(() -> new RuntimeException("Wrong Owner")))
                 .createdDate(Date.from(Instant.now()))
                 .build();
