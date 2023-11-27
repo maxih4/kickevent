@@ -36,6 +36,8 @@ public class Comment {
     private Date created;
     private Date lastEdited;
 
+
+    @Column(length=100000)
     private String content;
 
 }
