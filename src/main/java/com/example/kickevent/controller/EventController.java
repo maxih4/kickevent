@@ -50,7 +50,7 @@ public class EventController {
 
 
     //TODO: New Exception that the Event hasnt been found
-    @PreAuthorize("hasAuthority('ADMIN') || @eventService.findById(#id).get().owner==authentication.name")
+    @PreAuthorize("hasAuthority('ADMIN') || @eventService.findById(#id).get().owner.userName==authentication.name")
     @PutMapping("/api/event/{id}")
     Event edit(@RequestBody Event newEvent, @PathVariable("id") Long id) {
         return eventService.findById(id).map(Event -> {
@@ -66,7 +66,7 @@ public class EventController {
     }
 
     //TODO: New Exception that the Event hasnt been found
-    @PreAuthorize("hasAuthority('ADMIN') || @eventService.findById(#id).get().owner==authentication.name")
+    @PreAuthorize("hasAuthority('ADMIN') || @eventService.findById(#id).get().owner.userName==authentication.name")
     @DeleteMapping("/api/event/{id}")
     ResponseEntity<?> delete(@PathVariable("id") Long id) {
         eventService.delete(eventService.findById(id).orElseThrow(() -> new RuntimeException("Event with that ID not found")));

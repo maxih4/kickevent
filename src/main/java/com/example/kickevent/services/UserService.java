@@ -3,6 +3,7 @@ package com.example.kickevent.services;
 import com.example.kickevent.model.Role;
 import com.example.kickevent.model.User;
 import com.example.kickevent.exceptions.UsernameAlreadyTakenException;
+import com.example.kickevent.repositories.RefreshTokenRepository;
 import com.example.kickevent.repositories.RoleRepository;
 import com.example.kickevent.repositories.UserRepository;
 
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 ;
 import java.util.*;
@@ -33,11 +35,15 @@ public class UserService implements UserDetailsService {
     @Autowired
     private final RoleRepository roleRepository;
 
+    @Autowired
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, RefreshTokenRepository refreshTokenRepository) {
         super();
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     public User createPerson(String userName, String password) {
@@ -55,7 +61,11 @@ public class UserService implements UserDetailsService {
 
     }
 
+    @Transactional
     public User delete(User user) {
+        user.setRoles(null);
+
+        refreshTokenRepository.deleteByUser(user);
         userRepository.delete(user);
         return user;
     }
