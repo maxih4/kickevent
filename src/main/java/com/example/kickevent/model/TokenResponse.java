@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 public class TokenResponse implements Serializable {
@@ -15,14 +16,17 @@ public class TokenResponse implements Serializable {
     private final String refreshToken;
     private final Date expirationDateRefreshToken;
     private final Long userId;
+    private final List<Role> roles;
 
 
-    public TokenResponse(String jwtToken, Date expirationDate, String refreshToken, Date expirationDateRefreshToken, Long id) {
+    public TokenResponse(String jwtToken, Date expirationDate, String refreshToken, Date expirationDateRefreshToken, Long id, List<Role> roles) {
         this.jwtToken = jwtToken;
         this.expirationDate= expirationDate;
         this.refreshToken = refreshToken;
         this.expirationDateRefreshToken = expirationDateRefreshToken;
         this.userId=id;
+        this.roles=roles;
+
     }
 
 

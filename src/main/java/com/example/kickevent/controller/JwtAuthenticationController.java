@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -46,8 +47,9 @@ public class JwtAuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
         final Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
         final RefreshToken refreshToken = refreshTokenService.createRefreshToken(id);
+        final List<Role> roles = userService.findByUsername(userDetails.getUsername()).get().getRoles();
 
-        return ResponseEntity.ok(new TokenResponse(token, expirationDate, refreshToken.getToken(), refreshToken.getExpiryDate(), id));
+        return ResponseEntity.ok(new TokenResponse(token, expirationDate, refreshToken.getToken(), refreshToken.getExpiryDate(), id, roles));
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -75,7 +77,7 @@ public class JwtAuthenticationController {
                 .map(user -> {
                     String token = jwtTokenUtil.generateTokenFromUsername(user.getUserName());
 
-                    return ResponseEntity.ok(new TokenResponse(token,jwtTokenUtil.getExpirationDateFromToken(token),requestRefreshToken,refreshTokenService.findByToken(requestRefreshToken).get().getExpiryDate(),refreshTokenService.findByToken(requestRefreshToken).get().getUser().getId()));
+                    return ResponseEntity.ok(new TokenResponse(token, jwtTokenUtil.getExpirationDateFromToken(token), requestRefreshToken, refreshTokenService.findByToken(requestRefreshToken).get().getExpiryDate(), refreshTokenService.findByToken(requestRefreshToken).get().getUser().getId(),refreshTokenService.findByToken(requestRefreshToken).get().getUser().getRoles()));
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
