@@ -43,6 +43,7 @@ public class Event {
     private String streetName;
     private String houseNumber;
     private String city;
+    private Integer postalCode;
 
     private Date createdDate;
 
@@ -50,7 +51,7 @@ public class Event {
     private String content;
 
 
-    public Event(long id, String title, Date startDate, Date endDate, String streetName, String houseNumber, String city, Date createdDate, String content) {
+    public Event(long id, String title, Date startDate, Date endDate, String streetName, String houseNumber, String city, Date createdDate, String content, Integer postalCode) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
@@ -60,5 +61,6 @@ public class Event {
         this.city = city;
         this.createdDate = createdDate;
         this.content = content;
+        this.postalCode=postalCode;
     }
 }
