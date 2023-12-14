@@ -54,13 +54,14 @@ public class EventController {
     @PutMapping("/api/event/{id}")
     Event edit(@RequestBody Event newEvent, @PathVariable("id") Long id) {
         return eventService.findById(id).map(Event -> {
-            Event.setStartDate(newEvent.getStartDate());
-            Event.setEndDate(newEvent.getEndDate());
-            Event.setCity(newEvent.getCity());
-            Event.setHouseNumber(newEvent.getHouseNumber());
-            Event.setStreetName(newEvent.getStreetName());
-            Event.setTitle(newEvent.getTitle());
-            Event.setContent(newEvent.getContent());
+            if(newEvent.getStartDate()!=null)Event.setStartDate(newEvent.getStartDate());
+            if(newEvent.getEndDate()!=null) Event.setEndDate(newEvent.getEndDate());
+            if(newEvent.getCity()!=null)Event.setCity(newEvent.getCity());
+            if(newEvent.getHouseNumber()!=null)Event.setHouseNumber(newEvent.getHouseNumber());
+            if(newEvent.getStreetName()!=null)Event.setStreetName(newEvent.getStreetName());
+            if(newEvent.getTitle()!=null)Event.setTitle(newEvent.getTitle());
+            if(newEvent.getContent()!=null)Event.setContent(newEvent.getContent());
+            if(newEvent.getPostalCode()!=null)Event.setPostalCode(newEvent.getPostalCode());
             return eventService.save(Event);
         }).orElseThrow(() -> new RuntimeException("Event with that ID not found"));
     }

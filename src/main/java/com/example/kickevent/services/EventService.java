@@ -37,6 +37,7 @@ public class EventService {
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
                 .streetName(event.getStreetName())
+                .postalCode(event.getPostalCode())
                 .houseNumber(event.getHouseNumber())
                 .city(event.getCity())
                 .content(event.getContent())
