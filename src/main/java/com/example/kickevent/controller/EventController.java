@@ -36,8 +36,15 @@ public class EventController {
     @PreAuthorize("hasAuthority('USER') || hasAuthority('ADMIN')")
     @PostMapping("/api/event")
     Event create(@RequestBody Event newEvent, Authentication auth) {
+        if (newEvent.getContent() == null || newEvent.getContent().isEmpty() ||
+                newEvent.getCity() == null || newEvent.getCity().isEmpty() || newEvent.getEndDate() == null || newEvent.getStartDate() == null || newEvent.getStreetName() == null
+                || newEvent.getStreetName().isEmpty()|| newEvent.getHouseNumber()==null||newEvent.getHouseNumber().isEmpty() ||newEvent.getPostalCode()==null) {
+            throw new RuntimeException("One or more fields are empty");
 
-        return eventService.createEvent(newEvent, auth);
+        } else {
+            return eventService.createEvent(newEvent, auth);
+        }
+
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -54,14 +61,14 @@ public class EventController {
     @PutMapping("/api/event/{id}")
     Event edit(@RequestBody Event newEvent, @PathVariable("id") Long id) {
         return eventService.findById(id).map(Event -> {
-            if(newEvent.getStartDate()!=null)Event.setStartDate(newEvent.getStartDate());
-            if(newEvent.getEndDate()!=null) Event.setEndDate(newEvent.getEndDate());
-            if(newEvent.getCity()!=null)Event.setCity(newEvent.getCity());
-            if(newEvent.getHouseNumber()!=null)Event.setHouseNumber(newEvent.getHouseNumber());
-            if(newEvent.getStreetName()!=null)Event.setStreetName(newEvent.getStreetName());
-            if(newEvent.getTitle()!=null)Event.setTitle(newEvent.getTitle());
-            if(newEvent.getContent()!=null)Event.setContent(newEvent.getContent());
-            if(newEvent.getPostalCode()!=null)Event.setPostalCode(newEvent.getPostalCode());
+            if (newEvent.getStartDate() != null) Event.setStartDate(newEvent.getStartDate());
+            if (newEvent.getEndDate() != null) Event.setEndDate(newEvent.getEndDate());
+            if (newEvent.getCity() != null) Event.setCity(newEvent.getCity());
+            if (newEvent.getHouseNumber() != null) Event.setHouseNumber(newEvent.getHouseNumber());
+            if (newEvent.getStreetName() != null) Event.setStreetName(newEvent.getStreetName());
+            if (newEvent.getTitle() != null) Event.setTitle(newEvent.getTitle());
+            if (newEvent.getContent() != null) Event.setContent(newEvent.getContent());
+            if (newEvent.getPostalCode() != null) Event.setPostalCode(newEvent.getPostalCode());
             return eventService.save(Event);
         }).orElseThrow(() -> new RuntimeException("Event with that ID not found"));
     }
