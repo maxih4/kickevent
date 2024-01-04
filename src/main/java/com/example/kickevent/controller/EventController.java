@@ -28,9 +28,11 @@ public class EventController {
         this.eventService = eventService;
     }
 
+
+
     @GetMapping("/api/event")
-    List<Event> all() {
-        return eventService.getAll();
+    List<Event> all(@RequestParam(required = false) String sort, @RequestParam(required = false) String search) {
+        return eventService.getAll(sort,search);
     }
 
     @PreAuthorize("hasAuthority('USER') || hasAuthority('ADMIN')")
@@ -38,7 +40,7 @@ public class EventController {
     Event create(@RequestBody Event newEvent, Authentication auth) {
         if (newEvent.getContent() == null || newEvent.getContent().isEmpty() ||
                 newEvent.getCity() == null || newEvent.getCity().isEmpty() || newEvent.getEndDate() == null || newEvent.getStartDate() == null || newEvent.getStreetName() == null
-                || newEvent.getStreetName().isEmpty()|| newEvent.getHouseNumber()==null||newEvent.getHouseNumber().isEmpty() ||newEvent.getPostalCode()==null) {
+                || newEvent.getStreetName().isEmpty() || newEvent.getHouseNumber() == null || newEvent.getHouseNumber().isEmpty() || newEvent.getPostalCode() == null) {
             throw new RuntimeException("One or more fields are empty");
 
         } else {
@@ -52,7 +54,7 @@ public class EventController {
     EntityModel<Event> one(@PathVariable Long id) {
         Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
         return EntityModel.of(event, linkTo(WebMvcLinkBuilder.methodOn(EventController.class).one(id)).withSelfRel(),
-                linkTo(WebMvcLinkBuilder.methodOn(EventController.class).all()).withRel("Events"));
+                linkTo(WebMvcLinkBuilder.methodOn(EventController.class).all(null,null)).withRel("Events"));
     }
 
 
