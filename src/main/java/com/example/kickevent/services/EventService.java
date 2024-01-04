@@ -7,6 +7,7 @@ import com.example.kickevent.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.security.Principal;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,8 +29,36 @@ public class EventService {
     private UserRepository userRepository;
 
 
-    public List<Event> getAll() {
+    public List<Event> getAll(String sortBy, String search) {
+        List<Event> returnlist;
+        if (sortBy != null && !sortBy.isBlank() && sortBy.contains(",")){
+            try{
+                String filterOne = sortBy.split(",")[0];
+                String filterTwo = sortBy.split(",")[1];
+                Sort sort = Sort.by(filterOne);
+                if(filterTwo.equals("desc")){
+                    sort = sort.descending();
+                }
+
+                returnlist = this.eventRepository.findAll(sort);
+                if (search!= null && !search.isBlank()){
+                    return returnlist.stream().filter(event->filter(event,search)).toList();
+                }
+                return returnlist;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        if (search!= null && !search.isBlank()){
+
+            return this.eventRepository.findAll().stream().filter(event->filter(event,search)).toList();
+        }
         return this.eventRepository.findAll();
+
+    }
+
+    public boolean filter(Event event, String search){
+        return event.toString().toLowerCase().contains(search);
     }
 
     public Event createEvent(Event event, Authentication auth) {
