@@ -40,7 +40,7 @@ public class EventController {
     Event create(@RequestBody Event newEvent, Authentication auth) {
         if (newEvent.getContent() == null || newEvent.getContent().isEmpty() ||
                 newEvent.getCity() == null || newEvent.getCity().isEmpty() || newEvent.getEndDate() == null || newEvent.getStartDate() == null || newEvent.getStreetName() == null
-                || newEvent.getStreetName().isEmpty() || newEvent.getHouseNumber() == null || newEvent.getHouseNumber().isEmpty() || newEvent.getPostalCode() == null) {
+                || newEvent.getStreetName().isEmpty() || newEvent.getHouseNumber() == null || newEvent.getHouseNumber().isEmpty() || newEvent.getPostalCode() == null ||newEvent.getLongitude() ==null || newEvent.getLatitude()==null) {
             throw new RuntimeException("One or more fields are empty");
 
         } else {
@@ -71,6 +71,8 @@ public class EventController {
             if (newEvent.getTitle() != null) Event.setTitle(newEvent.getTitle());
             if (newEvent.getContent() != null) Event.setContent(newEvent.getContent());
             if (newEvent.getPostalCode() != null) Event.setPostalCode(newEvent.getPostalCode());
+            if (newEvent.getLatitude() != null) Event.setLatitude(newEvent.getLatitude());
+            if (newEvent.getLongitude() != null) Event.setLongitude(newEvent.getLongitude());
             return eventService.save(Event);
         }).orElseThrow(() -> new RuntimeException("Event with that ID not found"));
     }
