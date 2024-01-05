@@ -47,11 +47,14 @@ public class Event {
 
     private Date createdDate;
 
+    private String longitude;
+    private String latitude;
+
     @Column(length=100000)
     private String content;
 
 
-    public Event(long id, String title, Date startDate, Date endDate, String streetName, String houseNumber, String city, Date createdDate, String content, Integer postalCode) {
+    public Event(long id, String title, Date startDate, Date endDate, String streetName, String houseNumber, String city, Date createdDate, String content, Integer postalCode, String latitude, String longitude) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
@@ -62,5 +65,7 @@ public class Event {
         this.createdDate = createdDate;
         this.content = content;
         this.postalCode=postalCode;
+        this.longitude=longitude;
+        this.latitude=latitude;
     }
 }
