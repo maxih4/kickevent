@@ -65,6 +65,8 @@ jobs:
           tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           file: ./Dockerfile
 
+
+
   deploy:
     permissions:
       contents: none

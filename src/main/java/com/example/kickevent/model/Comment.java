@@ -29,7 +29,7 @@ public class Comment {
     private Event event;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "person_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User owner;
 
@@ -37,7 +37,7 @@ public class Comment {
     private Date lastEdited;
 
 
-    @Column(length=100000)
+    @Column(length=8000)
     private String content;
 
 }
