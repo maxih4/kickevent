@@ -1,4 +1,4 @@
-FROM maven AS build
+FROM maven:3.6.0-amazoncorretto-11 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
