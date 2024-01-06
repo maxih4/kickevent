@@ -62,6 +62,9 @@ jobs:
       - name: Lowercase the repo name and username
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
+      - name: Curl Runner Ip
+        run: agentIP=$(curl -s https://api.ipify.org/)
+
       - name: Whitelist Github Runner IP
         uses: azure/CLI@v1
 
@@ -70,7 +73,6 @@ jobs:
             apt-get update 
             apt-get install -y curl    
             set -eu
-            agentIP=$(curl -s https://api.ipify.org/)
             az sql server firewall-rule add \
               --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
               --name "${{ secrets.AZURE_RULE_NAME }}" \
