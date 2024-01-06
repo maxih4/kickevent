@@ -1,4 +1,4 @@
-FROM maven:3.6.0-amazoncorretto-11 AS build
+FROM maven AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
@@ -12,7 +12,7 @@ RUN --mount=type=secret,id=JWT_SECRET \
     export MYSQL_USER=$(cat /run/secrets/MYSQL_USER) && \
     mvn clean package spring-boot:repackage -f pom.xml
 
-FROM amazoncorretto:11
+FROM amazoncorretto:16
 EXPOSE 8443:8443
 WORKDIR /app
 COPY --from=build /app/target/kickeventBackend.jar /app/kickeventBackend.jar
