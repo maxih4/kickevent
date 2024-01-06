@@ -2,7 +2,7 @@ FROM maven AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN clean package spring-boot:repackage -f pom.xml
+RUN mvn clean package spring-boot:repackage -f pom.xml
 
 FROM amazoncorretto:11
 EXPOSE 8443:8443
