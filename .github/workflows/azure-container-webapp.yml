@@ -64,7 +64,7 @@ jobs:
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
 
       - name: Curl Runner Ip
-        run: agentIP=$(curl -s https://api.ipify.org/)
+        run: echo "agentIP=$(curl -s https://api.ipify.org/)" >>${GITHUB_ENV}
 
 
       - name: Azure Login
@@ -86,8 +86,8 @@ jobs:
               --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
               --name "${{ secrets.AZURE_RULE_NAME }}" \
               --server "${{ secrets.AZURE_SERVER_NAME }}" \
-              --start-ip-address $agentIP \
-              --end-ip-address $agentIP 
+              --start-ip-address ${{ env.agentIP }} \
+              --end-ip-address ${{ env.agentIP }} 
             sleep 100
 
 
