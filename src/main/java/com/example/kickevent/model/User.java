@@ -20,21 +20,21 @@ import java.util.List;
 @Setter
 @ToString
 
-@Table(name = "User",
-        uniqueConstraints = {@UniqueConstraint(columnNames = "user_name")})
+@Table(name = "person",
+        uniqueConstraints = {@UniqueConstraint(columnNames = "person_name")})
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "user_name")
+    @Column(name = "person_name")
     private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name="user_id", referencedColumnName ="id"),
+    @JoinTable(name = "person_roles", joinColumns = @JoinColumn(name="person_id", referencedColumnName ="id"),
         inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
     )
     private List<Role> roles = new ArrayList<>();

@@ -31,9 +31,9 @@ public class Event {
 
    // @ManyToOne(fetch = FetchType.LAZY, optional = false)
    // @JoinColumn(name = "user_id", nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
+    @JoinColumn(name = "person_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
 
     private User owner;
 
@@ -50,7 +50,7 @@ public class Event {
     private String longitude;
     private String latitude;
 
-    @Column(length=100000)
+    @Column(length=8000)
     private String content;
 
 
