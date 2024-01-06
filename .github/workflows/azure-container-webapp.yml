@@ -28,6 +28,10 @@ name: Build and deploy a container to an Azure Web App
 
 env:
   AZURE_WEBAPP_NAME: KickeventBackend
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+  MYSQL_USER: ${{ secrets.MYSQL_USER }}
 
 on:
   push:
