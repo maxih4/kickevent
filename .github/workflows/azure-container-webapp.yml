@@ -60,15 +60,16 @@ jobs:
 
       - name: Build and push container image to registry
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
         with:
           push: true
           tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           file: ./Dockerfile
-          secrets: |
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            KEYSTORE_PASS=${{ secrets.KEYSTORE_PASS }}
-            MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-            MYSQL_USER=${{ secrets.MYSQL_USER }}
+
 
   deploy:
     permissions:
