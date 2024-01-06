@@ -69,9 +69,7 @@ jobs:
         uses: azure/CLI@v1
 
         with:
-          inlineScript: |
-            apt-get update 
-            apt-get install -y curl    
+          inlineScript: |   
             set -eu
             az sql server firewall-rule add \
               --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
@@ -104,8 +102,6 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            apt-get update 
-            apt-get install -y curl  
             set -eu
             az sql server firewall-rule delete \
               --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
