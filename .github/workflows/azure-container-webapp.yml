@@ -73,6 +73,11 @@ jobs:
           push: true
           tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           file: ./Dockerfile
+          secrets: |
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            KEYSTORE_PASS=${{ secrets.KEYSTORE_PASS }}
+            MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+            MYSQL_USER=${{ secrets.MYSQL_USER }}
 
 
   deploy:
