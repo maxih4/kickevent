@@ -24,7 +24,7 @@ RUN --mount=type=secret,id=JWT_SECRET \
     export JWT_SECRET=$(cat /run/secrets/JWT_SECRET) \
     export KEYSTORE_PASS=$(cat /run/secrets/KEYSTORE_PASS) && \
     export MYSQL_PASSWORD=$(cat /run/secrets/MYSQL_PASSWORD) && \
-    export MYSQL_USER=$(cat /run/secrets/MYSQL_USER) && \
+    export MYSQL_USER=$(cat /run/secrets/MYSQL_USER)
 
 ENTRYPOINT ["java","-jar","/app/kickeventBackend.jar"]
 
