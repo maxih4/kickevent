@@ -80,15 +80,15 @@ jobs:
         uses: azure/CLI@v1
 
         with:
-          inlineScript: |   
-            set -eu
+          inlineScript: |
+            az account set --subscription "Azure for Students"
             az sql server firewall-rule create \
-              --resource-group "${{ secrets.AZURE_RESsOURCE_GROUP }}" \
+              --resource-group "${{ secrets.AZURE_RESSOURCE_GROUP }}" \
               --name "${{ secrets.AZURE_RULE_NAME }}" \
               --server "${{ secrets.AZURE_SERVER_NAME }}" \
               --start-ip-address ${{ env.agentIP }} \
               --end-ip-address ${{ env.agentIP }} 
-            sleep 100
+            
 
 
       - name: Build and push container image to registry
@@ -113,7 +113,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            set -eu
+            az account set --subscription "Azure for Students"
             az sql server firewall-rule delete \
               --resource-group "${{ secrets.AZURE_RESSOURCE_GROUP }}" \
               --name "${{ secrets.AZURE_RULE_NAME }}" \
