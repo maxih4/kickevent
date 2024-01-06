@@ -64,8 +64,11 @@ jobs:
 
       - name: Whitelist Github Runner IP
         uses: azure/CLI@v1
+
         with:
           inlineScript: |
+            apt-get update 
+            apt-get install -y curl    
             set -eu
             agentIP=$(curl -s https://api.ipify.org/)
             az sql server firewall-rule add \
@@ -100,7 +103,6 @@ jobs:
         with:
           inlineScript: |
             set -eu
-            agentIP=$(curl -s https://api.ipify.org/)
             az sql server firewall-rule delete \
               --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
               --name "${{ secrets.AZURE_RULE_NAME }}" \
