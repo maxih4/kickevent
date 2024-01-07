@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.requiresChannel().anyRequest().requiresSecure();
+       // httpSecurity.requiresChannel().anyRequest().requiresSecure();
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
 
