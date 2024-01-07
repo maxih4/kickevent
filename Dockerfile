@@ -2,7 +2,6 @@ FROM maven AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-COPY keystore.jks .
 RUN --mount=type=secret,id=JWT_SECRET \
     --mount=type=secret,id=KEYSTORE_PASS \
     --mount=type=secret,id=MYSQL_PASSWORD \
@@ -14,10 +13,9 @@ RUN --mount=type=secret,id=JWT_SECRET \
     mvn clean package spring-boot:repackage -f pom.xml
 
 FROM amazoncorretto:16
-EXPOSE 8443:8443
+EXPOSE 443:8443
 WORKDIR /app
 COPY --from=build /app/target/kickeventBackend.jar /app/kickeventBackend.jar
-COPY --from=build /app/keystore.jks /app/keystore.jks
 
 
 ENTRYPOINT ["java","-jar","/app/kickeventBackend.jar"]
