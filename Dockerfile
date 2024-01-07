@@ -2,7 +2,7 @@ FROM maven AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-Copy keystore.jks
+COPY keystore.jks .
 RUN --mount=type=secret,id=JWT_SECRET \
     --mount=type=secret,id=KEYSTORE_PASS \
     --mount=type=secret,id=MYSQL_PASSWORD \
