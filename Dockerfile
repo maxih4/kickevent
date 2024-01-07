@@ -13,7 +13,7 @@ RUN --mount=type=secret,id=JWT_SECRET \
     mvn clean package spring-boot:repackage -f pom.xml
 
 FROM amazoncorretto:16
-EXPOSE 443:8443
+EXPOSE 443:443
 WORKDIR /app
 COPY --from=build /app/target/kickeventBackend.jar /app/kickeventBackend.jar
 
