@@ -17,7 +17,7 @@ FROM amazoncorretto:16
 EXPOSE 8443:8443
 WORKDIR /app
 COPY --from=build /app/target/kickeventBackend.jar /app/kickeventBackend.jar
-COPY --from=build keystore.jks .
+COPY --from=build /app/keystore.jks /app/keystore.jks
 
 
 ENTRYPOINT ["java","-jar","/app/kickeventBackend.jar"]
