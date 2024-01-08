@@ -55,7 +55,8 @@ public class UserController {
         return userService.findById(id).map(User -> {
             User.setUserName(newUser.getUserName());
             User.setRoles(newUser.getRoles());
-            return userService.save(User);
+            return userService.update(User);
+
         }).orElseGet(() -> {
             newUser.setId(id);
             return userService.save(newUser);

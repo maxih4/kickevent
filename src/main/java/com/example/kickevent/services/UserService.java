@@ -61,6 +61,11 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public User update(User user){
+        if (userRepository.findByUserName(user.getUserName()).isPresent() && !Objects.equals(userRepository.findByUserName(user.getUserName()).get().getId(), user.getId())) throw new UsernameAlreadyTakenException(user.getUserName());
+        return userRepository.save(user);
+    }
+
     @Transactional
     public User delete(User user) {
         user.setRoles(null);
