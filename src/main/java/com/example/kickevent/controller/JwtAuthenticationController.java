@@ -1,8 +1,8 @@
 package com.example.kickevent.controller;
 
-import com.example.kickevent.model.*;
 import com.example.kickevent.exceptions.TokenRefreshException;
-import com.example.kickevent.security.*;
+import com.example.kickevent.model.*;
+import com.example.kickevent.security.JwtTokenUtil;
 import com.example.kickevent.services.RefreshTokenService;
 import com.example.kickevent.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +11,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")

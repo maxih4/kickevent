@@ -1,7 +1,7 @@
 package com.example.kickevent.controller;
 
-import com.example.kickevent.model.User;
 import com.example.kickevent.exceptions.UserNotFoundException;
+import com.example.kickevent.model.User;
 import com.example.kickevent.services.UserService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;

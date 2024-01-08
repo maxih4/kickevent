@@ -2,15 +2,10 @@ package com.example.kickevent.services;
 
 import com.example.kickevent.model.Comment;
 import com.example.kickevent.repositories.CommentRepository;
-import com.example.kickevent.repositories.EventRepository;
 import com.example.kickevent.repositories.UserRepository;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.Date;

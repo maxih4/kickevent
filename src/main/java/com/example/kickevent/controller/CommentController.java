@@ -1,10 +1,7 @@
 package com.example.kickevent.controller;
 
 import com.example.kickevent.model.Comment;
-import com.example.kickevent.repositories.CommentRepository;
-import com.example.kickevent.repositories.EventRepository;
 import com.example.kickevent.services.CommentService;
-import com.example.kickevent.services.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")

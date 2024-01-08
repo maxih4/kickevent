@@ -1,7 +1,6 @@
 package com.example.kickevent.services;
 
 import com.example.kickevent.model.Event;
-import com.example.kickevent.model.User;
 import com.example.kickevent.repositories.EventRepository;
 import com.example.kickevent.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -11,11 +10,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

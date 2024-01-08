@@ -1,12 +1,11 @@
 package com.example.kickevent.services;
 
+import com.example.kickevent.exceptions.UsernameAlreadyTakenException;
 import com.example.kickevent.model.Role;
 import com.example.kickevent.model.User;
-import com.example.kickevent.exceptions.UsernameAlreadyTakenException;
 import com.example.kickevent.repositories.RefreshTokenRepository;
 import com.example.kickevent.repositories.RoleRepository;
 import com.example.kickevent.repositories.UserRepository;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-;
 import java.util.*;
 import java.util.stream.Collectors;
+
+;
 
 @Service
 public class UserService implements UserDetailsService {
