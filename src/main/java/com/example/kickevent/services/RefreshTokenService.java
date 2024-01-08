@@ -1,10 +1,10 @@
 package com.example.kickevent.services;
 
 
+import com.example.kickevent.exceptions.TokenRefreshException;
 import com.example.kickevent.model.RefreshToken;
 import com.example.kickevent.repositories.RefreshTokenRepository;
 import com.example.kickevent.repositories.UserRepository;
-import com.example.kickevent.exceptions.TokenRefreshException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

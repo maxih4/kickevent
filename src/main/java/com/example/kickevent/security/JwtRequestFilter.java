@@ -3,7 +3,6 @@ package com.example.kickevent.security;
 import com.example.kickevent.exceptions.JwtTokenExpiredException;
 import com.example.kickevent.services.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
