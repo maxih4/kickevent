@@ -81,7 +81,7 @@ jobs:
 
         with:
           inlineScript: |
-            az account set --subscription "Azure Subscription 1"
+            az account set --subscription "Azure for Students"
             az sql server firewall-rule create \
               --resource-group "${{ secrets.AZURE_RESSOURCE_GROUP }}" \
               --name "${{ secrets.AZURE_RULE_NAME }}" \
@@ -113,7 +113,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az account set --subscription "Azure Subscription 1"
+            az account set --subscription "Azure for Students"
             az sql server firewall-rule delete \
               --resource-group "${{ secrets.AZURE_RESSOURCE_GROUP }}" \
               --name "${{ secrets.AZURE_RULE_NAME }}" \
