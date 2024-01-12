@@ -6,7 +6,7 @@ import com.example.kickevent.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -26,31 +26,44 @@ public class EventService {
     private UserRepository userRepository;
 
 
-    public List<Event> getAll(String sortBy, String search) {
-        List<Event> returnlist;
+    public Page<Event> getAll(String sortBy, String search, int size, int page) {
+        Page<Event> returnlist;
+
+
         if (sortBy != null && !sortBy.isBlank() && sortBy.contains(",")){
             try{
                 String filterOne = sortBy.split(",")[0];
                 String filterTwo = sortBy.split(",")[1];
                 Sort sort = Sort.by(filterOne);
+
                 if(filterTwo.equals("desc")){
                     sort = sort.descending();
                 }
-
-                returnlist = this.eventRepository.findAll(sort);
+                Pageable paging = PageRequest.of(page,size,sort);
+                returnlist = this.eventRepository.findAll(paging);
                 if (search!= null && !search.isBlank()){
-                    return returnlist.stream().filter(event->filter(event,search)).toList();
+                    List<Event> searchRes = this.eventRepository.findAll(sort).stream().filter(event->filter(event,search)).toList();
+                    int start = (int) paging.getOffset();
+                    int end = Math.min((start + paging.getPageSize()),searchRes.size());
+                    List<Event> searchPageContent = searchRes.subList(start,end);
+                    return new PageImpl<>(searchPageContent,paging,searchRes.size());
                 }
                 return returnlist;
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
+        Pageable paging = PageRequest.of(page,size);
         if (search!= null && !search.isBlank()){
 
-            return this.eventRepository.findAll().stream().filter(event->filter(event,search)).toList();
+            List<Event> searchRes = this.eventRepository.findAll().stream().filter(event->filter(event,search)).toList();
+            int start = (int) paging.getOffset();
+            int end = Math.min((start + paging.getPageSize()),searchRes.size());
+            List<Event> searchPageContent = searchRes.subList(start,end);
+            return new PageImpl<>(searchPageContent,paging,searchRes.size());
         }
-        return this.eventRepository.findAll();
+
+        return this.eventRepository.findAll(paging);
 
     }
 
