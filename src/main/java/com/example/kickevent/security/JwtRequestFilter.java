@@ -33,7 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JwtTokenExpiredException {
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
@@ -42,7 +42,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, x-requested-with, Cache-Control, Access-Control-Allow-Methods, Access-Control-Allow-Headers, access-control-allow-origin ");
 
         final String requestTokenHeader = request.getHeader("Authorization");
-
+        if(request.getRequestURI().equals("/refreshtoken")) {
+            chain.doFilter(request, response);
+            return;
+        }
         String username = null;
         String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
@@ -54,7 +57,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
+
                 throw new JwtTokenExpiredException("JWT Token expired");
+
             }
         } else {
             logger.info(jwtToken);
