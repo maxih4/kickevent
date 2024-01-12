@@ -63,16 +63,16 @@ public class EventController {
     @PutMapping("/api/event/{id}")
     Event edit(@RequestBody Event newEvent, @PathVariable("id") Long id) {
         return eventService.findById(id).map(Event -> {
-            if (newEvent.getStartDate() != null) Event.setStartDate(newEvent.getStartDate());
-            if (newEvent.getEndDate() != null) Event.setEndDate(newEvent.getEndDate());
-            if (newEvent.getCity() != null) Event.setCity(newEvent.getCity());
-            if (newEvent.getHouseNumber() != null) Event.setHouseNumber(newEvent.getHouseNumber());
-            if (newEvent.getStreetName() != null) Event.setStreetName(newEvent.getStreetName());
-            if (newEvent.getTitle() != null) Event.setTitle(newEvent.getTitle());
-            if (newEvent.getContent() != null) Event.setContent(newEvent.getContent());
-            if (newEvent.getPostalCode() != null) Event.setPostalCode(newEvent.getPostalCode());
-            if (newEvent.getLatitude() != null) Event.setLatitude(newEvent.getLatitude());
-            if (newEvent.getLongitude() != null) Event.setLongitude(newEvent.getLongitude());
+            if (newEvent.getStartDate() != null && !newEvent.getStartDate().toString().isEmpty()) Event.setStartDate(newEvent.getStartDate()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getEndDate() != null && !newEvent.getEndDate().toString().isEmpty()) Event.setEndDate(newEvent.getEndDate()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getCity() != null && !newEvent.getCity().isEmpty()) Event.setCity(newEvent.getCity()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getHouseNumber() != null && !newEvent.getHouseNumber().isEmpty()) Event.setHouseNumber(newEvent.getHouseNumber()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getStreetName() != null && !newEvent.getStreetName().isEmpty())  Event.setStreetName(newEvent.getStreetName()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getTitle() != null && !newEvent.getTitle().isEmpty()) Event.setTitle(newEvent.getTitle()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getContent() != null && !newEvent.getContent().isEmpty()) Event.setContent(newEvent.getContent()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getPostalCode() != null && !newEvent.getPostalCode().toString().isEmpty()) Event.setPostalCode(newEvent.getPostalCode()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getLatitude() != null && !newEvent.getLatitude().isEmpty()) Event.setLatitude(newEvent.getLatitude()); else  throw new RuntimeException("One or more fields are empty");
+            if (newEvent.getLongitude() != null && !newEvent.getLongitude().isEmpty()) Event.setLongitude(newEvent.getLongitude()); else  throw new RuntimeException("One or more fields are empty");
             return eventService.save(Event);
         }).orElseThrow(() -> new RuntimeException("Event with that ID not found"));
     }
