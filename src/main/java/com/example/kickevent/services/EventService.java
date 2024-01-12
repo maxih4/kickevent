@@ -31,6 +31,7 @@ public class EventService {
 
 
         if (sortBy != null && !sortBy.isBlank() && sortBy.contains(",")){
+            System.out.println("1. if." +sortBy + search + size + page);
             try{
                 String filterOne = sortBy.split(",")[0];
                 String filterTwo = sortBy.split(",")[1];
@@ -55,14 +56,14 @@ public class EventService {
         }
         Pageable paging = PageRequest.of(page,size);
         if (search!= null && !search.isBlank()){
-
+            System.out.println("In dem if" +sortBy + search + size + page);
             List<Event> searchRes = this.eventRepository.findAll().stream().filter(event->filter(event,search)).toList();
             int start = (int) paging.getOffset();
             int end = Math.min((start + paging.getPageSize()),searchRes.size());
             List<Event> searchPageContent = searchRes.subList(start,end);
             return new PageImpl<>(searchPageContent,paging,searchRes.size());
         }
-
+        System.out.println("Hier angekommen" +sortBy + search + size + page);
         return this.eventRepository.findAll(paging);
 
     }
