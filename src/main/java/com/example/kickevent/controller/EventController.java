@@ -3,6 +3,7 @@ package com.example.kickevent.controller;
 import com.example.kickevent.exceptions.EventNotFoundException;
 import com.example.kickevent.model.Event;
 import com.example.kickevent.services.EventService;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,8 @@ public class EventController {
 
 
     @GetMapping("/api/event")
-    List<Event> all(@RequestParam(required = false) String sort, @RequestParam(required = false) String search) {
-        return eventService.getAll(sort,search);
+    Page<Event> all(@RequestParam(required = false) String sort, @RequestParam(required = false) String search, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
+        return eventService.getAll(sort,search,size,page);
     }
 
     @PreAuthorize("hasAuthority('USER') || hasAuthority('ADMIN')")
@@ -53,7 +54,7 @@ public class EventController {
     EntityModel<Event> one(@PathVariable Long id) {
         Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
         return EntityModel.of(event, linkTo(WebMvcLinkBuilder.methodOn(EventController.class).one(id)).withSelfRel(),
-                linkTo(WebMvcLinkBuilder.methodOn(EventController.class).all(null,null)).withRel("Events"));
+                linkTo(WebMvcLinkBuilder.methodOn(EventController.class).all(null,null,0,3)).withRel("Events"));
     }
 
 
