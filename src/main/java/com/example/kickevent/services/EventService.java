@@ -69,7 +69,7 @@ public class EventService {
     }
 
     public boolean filter(Event event, String search){
-        return event.toString().toLowerCase().contains(search);
+        return event.toStringForSearch().toLowerCase().contains(search);
     }
 
     public Event createEvent(Event event, Authentication auth) {
