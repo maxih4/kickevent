@@ -66,4 +66,9 @@ public class Event {
         this.longitude=longitude;
         this.latitude=latitude;
     }
+
+    public String toStringForSearch(){
+
+        return this.title + " " + this.owner.getUserName() + " " + this.startDate.toString() + " " + this.endDate.toString() + " " + this.streetName + " " + this.houseNumber + " " + this.postalCode + " " +this.city + " " +this.content;
+    }
 }
