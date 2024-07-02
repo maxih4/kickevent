@@ -76,18 +76,7 @@ jobs:
           enable-AzPSSession: true
 
 
-      - name: Whitelist Github Runner IP
-        uses: azure/CLI@v1
 
-        with:
-          inlineScript: |
-            az account set --subscription "Azure for Students"
-            az sql server firewall-rule create \
-              --resource-group "${{ secrets.AZURE_RESSOURCE_GROUP }}" \
-              --name "${{ secrets.AZURE_RULE_NAME }}" \
-              --server "${{ secrets.AZURE_SERVER_NAME }}" \
-              --start-ip-address ${{ env.agentIP }} \
-              --end-ip-address ${{ env.agentIP }} 
             
 
 
@@ -108,16 +97,7 @@ jobs:
             MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
             MYSQL_USER=${{ secrets.MYSQL_USER }}
 
-      - name: Remove GitHub Runner IP from Whitelist
-        if: always()
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az account set --subscription "Azure for Students"
-            az sql server firewall-rule delete \
-              --resource-group "${{ secrets.AZURE_RESSOURCE_GROUP }}" \
-              --name "${{ secrets.AZURE_RULE_NAME }}" \
-              --server "${{ secrets.AZURE_SERVER_NAME }}" \
+
 
 
   deploy:
