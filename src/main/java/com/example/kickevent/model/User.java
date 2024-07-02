@@ -32,7 +32,7 @@ public class User {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "person_roles", joinColumns = @JoinColumn(name="person_id", referencedColumnName ="id"),
+    @JoinTable(name = "person_roles",  joinColumns = @JoinColumn(name="person_id", referencedColumnName ="id"),
         inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
     )
     private List<Role> roles = new ArrayList<>();
