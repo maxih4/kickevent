@@ -11,7 +11,6 @@ RUN --mount=type=secret,id=JWT_SECRET \
     export KEYSTORE_PASS=$(cat /run/secrets/KEYSTORE_PASS) && \
     export MYSQL_PASSWORD=$(cat /run/secrets/MYSQL_PASSWORD) && \
     export MYSQL_USER=$(cat /run/secrets/MYSQL_USER) && \
-    export TEST_ENV=$(cat /run/secrets/TEST_ENV) && \
     mvn clean package spring-boot:repackage -f pom.xml
 
 FROM amazoncorretto:16
