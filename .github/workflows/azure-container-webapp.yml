@@ -79,7 +79,6 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          TEST_ENV: "Hallo"
         with:
           push: true
           tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
