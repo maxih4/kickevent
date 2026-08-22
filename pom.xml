@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>25</java.version>
 		<maven.compiler.release>25</maven.compiler.release>
+		<maven.compiler.proc>full</maven.compiler.proc>
 		<maven.test.skip>true</maven.test.skip>
 		<jjwt.version>0.13.0</jjwt.version>
 	</properties>

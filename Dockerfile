@@ -1,23 +1,19 @@
-FROM maven AS build
-WORKDIR /app
+FROM maven:3.9.11-eclipse-temurin-25 AS build
+WORKDIR /workspace
+
 COPY pom.xml .
+RUN mvn -B -ntp dependency:go-offline
+
 COPY src ./src
-COPY keystore.jks .
-RUN --mount=type=secret,id=JWT_SECRET \
-    --mount=type=secret,id=KEYSTORE_PASS \
-    --mount=type=secret,id=MYSQL_PASSWORD \
-    --mount=type=secret,id=MYSQL_USER \
-    export JWT_SECRET=$(cat /run/secrets/JWT_SECRET) \
-    export KEYSTORE_PASS=$(cat /run/secrets/KEYSTORE_PASS) && \
-    export MYSQL_PASSWORD=$(cat /run/secrets/MYSQL_PASSWORD) && \
-    export MYSQL_USER=$(cat /run/secrets/MYSQL_USER) && \
-    mvn clean package spring-boot:repackage -f pom.xml
+RUN mvn -B -ntp package
 
-FROM amazoncorretto:16
-EXPOSE 443:443
+FROM eclipse-temurin:25-jre
 WORKDIR /app
-COPY --from=build /app/target/kickeventBackend.jar /app/kickeventBackend.jar
-COPY --from=build /app/keystore.jks /app/keystore.jks
 
-ENTRYPOINT ["java","-jar","/app/kickeventBackend.jar"]
+RUN groupadd --system spring && useradd --system --gid spring spring
+COPY --from=build /workspace/target/kickeventBackend.jar /app/kickeventBackend.jar
+
+USER spring
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/kickeventBackend.jar"]
 
