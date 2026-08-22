@@ -62,7 +62,7 @@ public class WebSecurityConfig {
                 .cors(cors -> { })
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/login", "/register", "/refreshtoken", "/api/event", "/user", "/error,", "/api/event*", "/actuator/health", "/actuator/health/**").permitAll()
+                        .requestMatchers("/login", "/register", "/refreshtoken", "/api/event", "/user", "/error", "/api/event*", "/actuator/health", "/actuator/health/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
