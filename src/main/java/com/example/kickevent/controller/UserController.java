@@ -12,7 +12,6 @@ import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class UserController {
 

@@ -2,7 +2,8 @@ package com.example.kickevent.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.crypto.SecretKey;
+
 @Component
 public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-@Value("${user.token.expirationTimeInMs}")
-    public static long JWT_TOKEN_VALIDITY = 600000L;
+    public static final long DEFAULT_JWT_TOKEN_VALIDITY = 600000L;
+
+    @Value("${user.token.expirationTimeInMs:600000}")
+    private long jwtTokenValidity = DEFAULT_JWT_TOKEN_VALIDITY;
 
     @Value("${JWT_SECRET}")
     private String secret;
@@ -40,7 +45,11 @@ public class JwtTokenUtil implements Serializable {
     }
     //for retrieveing any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parser()
+                .verifyWith(signingKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     //check if the token has expired
@@ -68,9 +77,24 @@ public class JwtTokenUtil implements Serializable {
     //   compaction of the JWT to a URL-safe string
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+        Date issuedAt = new Date(System.currentTimeMillis());
+        return Jwts.builder()
+                .claims(claims)
+                .subject(subject)
+                .issuedAt(issuedAt)
+                .expiration(new Date(issuedAt.getTime() + jwtTokenValidity))
+                .signWith(signingKey(), Jwts.SIG.HS512)
+                .compact();
+    }
+
+    private SecretKey signingKey() {
+        try {
+            // The legacy JJWT overload accepted a Base64-encoded secret. Decode
+            // it here so tokens signed before the migration remain verifiable.
+            return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        } catch (IllegalArgumentException exception) {
+            throw new IllegalStateException("JWT_SECRET must be a valid Base64-encoded HS512 key", exception);
+        }
     }
 
     //validate token

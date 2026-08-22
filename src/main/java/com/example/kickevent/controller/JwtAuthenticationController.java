@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class JwtAuthenticationController {
 
     @Autowired

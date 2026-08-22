@@ -17,7 +17,6 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class EventController {
 
@@ -49,7 +48,6 @@ public class EventController {
 
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/api/event/{id}")
     EntityModel<Event> one(@PathVariable Long id) {
         Event event = eventService.findById(id).orElseThrow(() -> new EventNotFoundException(id));
