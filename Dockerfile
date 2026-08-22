@@ -20,6 +20,6 @@ COPY --from=build /workspace/target/kickeventBackend.jar /app/kickeventBackend.j
 USER spring
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl --fail --silent --show-error "http://127.0.0.1:${PORT:-8080}/api/event" || exit 1
+    CMD curl --fail --silent --show-error "http://127.0.0.1:${PORT:-8080}/actuator/health" || exit 1
 ENTRYPOINT ["java", "-jar", "/app/kickeventBackend.jar"]
 

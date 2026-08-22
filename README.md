@@ -47,12 +47,24 @@ Pass `-p <host-port>:${PORT}` if `PORT` is changed. The container listens on `80
 ## Deploy on Coolify
 
 1. Create a Coolify application from this repository and select **Dockerfile** as the build pack.
-2. Leave the Dockerfile path as `/Dockerfile`; expose container port `8080` (or the value chosen for `PORT`).
-3. Add the runtime environment variables from the table above in Coolify. `MYSQL_URL` should use the internal MySQL service hostname and the `mysql://host:3306/database` form. Store `MYSQL_PASSWORD` and `JWT_SECRET` as runtime secrets, never as Docker build arguments.
+2. In **General**, set the Dockerfile path to `/Dockerfile` and expose container port `8080` (or the value chosen for `PORT`). Do not expose the MySQL port publicly.
+3. Add the runtime environment variables from the table above in **Environment Variables**. `MYSQL_URL` should use the internal MySQL service hostname and the `mysql://host:3306/database` form. Store `MYSQL_PASSWORD` and `JWT_SECRET` as runtime secrets, never as Docker build arguments.
 4. Set `FRONTEND_ORIGIN` to the exact public frontend origin, including the scheme, for example `https://app.example.com`.
-5. Configure the Coolify proxy for HTTPS. The application itself serves HTTP only; no certificate or keystore is required in the image.
+5. In **Health Checks**, configure the following values:
 
-The image includes `curl` and declares a Docker healthcheck against `GET /api/event` on `127.0.0.1:${PORT:-8080}`. The probe only succeeds after the endpoint can read from MySQL, so configure a reachable database before expecting the Coolify healthcheck to pass. The endpoint is intentionally public to preserve the existing API authorization rules. Database schema updates are handled by the existing `spring.jpa.hibernate.ddl-auto=update` setting; back up the database before changing it in production.
+   | Coolify field | Value |
+   | --- | --- |
+   | Type | HTTP |
+   | Port | `8080` (or `PORT`) |
+   | Path | `/actuator/health` |
+   | Scheme | `http` |
+   | Interval | `30s` |
+   | Timeout | `5s` |
+   | Retries | `3` |
+
+6. Configure the Coolify proxy for HTTPS. The application itself serves HTTP only; no certificate or keystore is required in the image.
+
+The health endpoint is public so Coolify can probe it without a JWT. It reports the service as healthy only when the application and its database connection are available. The image also declares the same Docker healthcheck and includes `curl`. Database schema updates are handled by the existing `spring.jpa.hibernate.ddl-auto=update` setting; back up the database before changing it in production.
 
 ## Verification
 
