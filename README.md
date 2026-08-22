@@ -52,7 +52,7 @@ Pass `-p <host-port>:${PORT}` if `PORT` is changed. The container listens on `80
 4. Set `FRONTEND_ORIGIN` to the exact public frontend origin, including the scheme, for example `https://app.example.com`.
 5. Configure the Coolify proxy for HTTPS. The application itself serves HTTP only; no certificate or keystore is required in the image.
 
-Coolify can use `GET /api/event` as a basic application probe once the database is reachable. The endpoint is intentionally public to preserve the existing API authorization rules. Database schema updates are handled by the existing `spring.jpa.hibernate.ddl-auto=update` setting; back up the database before changing it in production.
+The image includes `curl` and declares a Docker healthcheck against `GET /api/event` on `127.0.0.1:${PORT:-8080}`. The probe only succeeds after the endpoint can read from MySQL, so configure a reachable database before expecting the Coolify healthcheck to pass. The endpoint is intentionally public to preserve the existing API authorization rules. Database schema updates are handled by the existing `spring.jpa.hibernate.ddl-auto=update` setting; back up the database before changing it in production.
 
 ## Verification
 
