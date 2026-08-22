@@ -31,6 +31,8 @@ java -jar target/kickeventBackend.jar
 
 On PowerShell, load the variables with `Get-Content .env | Where-Object { $_ -and -not $_.StartsWith('#') } | ForEach-Object { $name, $value = $_ -split '=', 2; [Environment]::SetEnvironmentVariable($name, $value) }` or set them in the shell before starting Java. The API is then available at `http://localhost:8080` (or the configured `PORT`).
 
+On the first startup against a fresh database, the application creates the standard `USER` and `ADMIN` roles when they are missing.
+
 The repository keeps the existing context test disabled through Maven's `maven.test.skip` setting because it requires a real MySQL/JWT environment and no test database infrastructure is part of this project. The source is still compiled during `mvn package`.
 
 ## Run with Docker
